@@ -2,15 +2,46 @@
 #include<iostream>
 #include <fstream>
 #include<string>
-#include <functional> 
-#include <bitset>
+#include <algorithm>
 using namespace std;
+string XOR_Function(char x ,char y)
+{
+	string XORvalue;
+	switch (x)
+	{
+	case '0':
+		if (y == '0')
+		{
+			XORvalue += '0';
+			break;
+		}
+		else
+		{
+			XORvalue += '1';
+			break;
+		}
+	case '1':
+		if (y == '1')
+		{
+			XORvalue += '0';
+			break;
+		}
+		else
+		{
+			XORvalue += '1';
+			break;
+		}
+
+	default:
+		break;
+	}
+	return XORvalue;
+}
 int main()
 {
-	string frame , generator , message , Zeros , newFrame , transmittedFrame , XORvalue;
+	string frame , generator , message , Zeros , newFrame , transmittedFrame , XORvalue , Temp;
 	int quotient;
-	bitset<5>F;
-	bitset<5>G;
+	
 	ifstream inFile("input.txt");
 	if (inFile.is_open())
 	{
@@ -24,24 +55,37 @@ int main()
 					Zeros = Zeros + "0";
 				}
 				newFrame = frame + Zeros;
-				for (int x = 0; x < frame.length(); x++)
+				for (int m = 0; m < newFrame.length(); m++)
 				{
 					for (int y = 0; y < generator.length(); y++)
 					{
-						transmittedFrame = newFrame.substr(x, generator.length());
-						//XORvalue = stoi(transmittedFrame,nullptr, 2) ^ stoi(generator, nullptr, 2);
-						//int integerValueG = stoi(generator, nullptr, 2);
-
-						bitset<5>G(generator.c_str()[y]);
-						cout << G << '\n'; //10011
+						transmittedFrame = newFrame.substr(0, generator.length());
+						XORvalue += XOR_Function(transmittedFrame[y], generator[y]);
 					}
-					bitset<5>F(transmittedFrame.c_str()[x]);
-					cout << F << '\n'; //10000
+					size_t pos = XORvalue.find('1');
+					if (pos == true)
+					{
+						for (int x = 0; x < XORvalue.length(); x++)
+						{
+							Temp = XORvalue.substr(XORvalue.find('1'), XORvalue.length());
+						}
+					}
+					else // all xor result is zeros
+					{
+						Temp = "";
+						pos = generator.length();
+						Temp = Temp + newFrame[generator.length() + pos];
+					}
+					cout << Temp << endl;
+					Temp = Temp + newFrame[generator.length() + pos];
+					cout << Temp << endl;
+					XORvalue = "";
+					for (int r = 0; r < Temp.length(); r++)
+					{
+						XORvalue += XOR_Function(Temp[r], generator[r]);
+					}
+					cout << XORvalue << endl;
 				}
-				cout << G << '\n'; //10011
-				cout << F << '\n'; //10000
-				XORvalue = (F ^ G).to_string();
-				
 			}
 		}
 		inFile.close();
@@ -54,6 +98,7 @@ int main()
 		outFile << "goz2 mn el frame 3la ad el generator: " <<transmittedFrame << '\n';
 		outFile << "Generator:"<<generator << '\n';
 		outFile << "XOR: "<< XORvalue << '\n';
+		outFile << "Remainder: " << Temp << '\n';
 		outFile.close();
 	}
 	else cout << "Unable to open file";
