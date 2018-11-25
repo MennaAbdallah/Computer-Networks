@@ -9,6 +9,10 @@ typedef struct {                                       /* frames are transported
 	seq_nr ack;                                        /* acknowledgement number */
 	packet info;                                       /* the network layer packet */
 } frame;
+static clock_t end_t=0;
+static clock_t start_t=0;
+static clock_t end_t_ack=0;
+static clock_t start_t_ack=0;
 /* Wait for an event to happen; return its type in event. */
 void wait_for_event(event_type * event);
 /* Fetch a packet from the network layer for transmission on the channel. */
