@@ -13,6 +13,7 @@ typedef struct {                                       /* frames are transported
 void wait_for_event(event_type * event)
 {
 	while(event!=frame_arrival|| event!=cksum_err|| event!=timeout|| event!=network_layer_ready);
+	
 }
 /* Fetch a packet from the network layer for transmission on the channel. */
 void from_network_layer(packet * p)
@@ -20,6 +21,8 @@ void from_network_layer(packet * p)
 	//assume getting input from user command line
 	cout<<"please enter packet from upper layers"<<endl;
 	cin>>p;
+	// to be sent to link layer
+	
 }
 /* Deliver information from an inbound frame to the network layer. */
 void to_network_layer(packet * p)
@@ -57,15 +60,15 @@ static clock_t start_t=0;
 void start_timer(seq_nr k)
 {
 
-	int timer =end_t-t1;
-	static clock_t t1=start_t;
+	// assume timer is equal 1000
+	seq_nr timer=end_t-start_t;
 	start_t=clock();
-
-	if(timer<0)
+	if(timer>1000)
 	{
-		timeout;
-
-		resend
+		event_type event=timeout;
+		wait_for_event(&event);
+		//timeout;
+		//resend
 	}
 }
 /* Stop the clock and disable the timeout event. */
@@ -78,27 +81,33 @@ static clock_t start_t_ack=0;
 /* Start an auxiliary timer and enable the ack timeout event. */
 void start_ack_timer(void)
 {
-	int timer =end_t_ack-t2;
-	static clock_t t2=start_t_ack;
-	start_t_ack=clock();
-
-	if(timer<0)
+	// assume timer is equal 200
+	seq_nr timer=end_t_ack-start_t_ack;
+	start_t_=clock();
+	if(timer>200)
 	{
-		ack timeout;
-
-		resend
+		event_type event=ack_timeout;
+		wait_for_event(&event);
+		//timeout;
+		//resend
 	}	
 }
 /* Stop the auxiliary timer and disable the ack timeout event. */
-void stop ack timer(void)
+void stop_ack_timer(void)
 {
 		end_t_ack=clock();
 
 }
 /* Allow the network layer to cause a network layer ready event. */
-void enable_network_layer(void);
+void enable_network_layer(void)
+{
+	event=network_layer_ready;
+}
 
 /* Forbid the network layer from causing a network layer ready event. */
-void disable_network_layer(void);
+void disable_network_layer(void)
+{
+	goto l1;
+}
 /* Macro inc is expanded in-line: increment k circularly. */
 #define inc(k) if(k < MAX_SEQ) k = k + 1; else k = 0
