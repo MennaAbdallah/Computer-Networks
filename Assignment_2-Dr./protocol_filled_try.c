@@ -10,26 +10,26 @@ typedef struct {                                       /* frames are transported
 	packet info;                                       /* the network layer packet */
 } frame;
 /* Wait for an event to happen; return its type in event. */
-void wait_for_event(event_type * event);
+void wait_for_event(event_type * event)
 {
 	while(event!=frame_arrival|| event!=cksum_err|| event!=timeout|| event!=network_layer_ready);
 }
 /* Fetch a packet from the network layer for transmission on the channel. */
-void from_network_layer(packet * p);
+void from_network_layer(packet * p)
 {
 	//assume getting input from user command line
 	cout<<"please enter packet from upper layers"<<endl;
 	cin>>p;
 }
 /* Deliver information from an inbound frame to the network layer. */
-void to_network_layer(packet * p);
+void to_network_layer(packet * p)
 {
 	frame temp;
 	from_physical_layer(&temp);
 	p=temp.info;
 }
 /* Go get an inbound frame from the physical layer and copy it to r. */
-void from_physical_layer(frame * r);
+void from_physical_layer(frame * r)
 {
 	cout<<"please enter frame received during transmission"<<endl;
 	cout<<"enter frame kind"<<endl;
@@ -42,7 +42,7 @@ void from_physical_layer(frame * r);
 	cin>>r->data;
 }
 /* Pass the frame to the physical layer for transmission. */
-void to_physical_layer(frame * s);
+void to_physical_layer(frame * s)
 {
 	// assume it's received on command
 	cout<<"frame kind ="<<s->kind;
@@ -53,7 +53,7 @@ void to_physical_layer(frame * s);
 /* Start the clock running and enable the timeout event. */
 	static clock_t end_t=0;
 	static clock_t start_t=0;
-void start_timer(seq_nr k);
+void start_timer(seq_nr k)
 {
 
 	int timer =end_t-t1;
@@ -68,14 +68,14 @@ void start_timer(seq_nr k);
 	}
 }
 /* Stop the clock and disable the timeout event. */
-void stop_timer(seq_nr k);
+void stop_timer(seq_nr k)
 {
 	end_t=clock();
 }
 static clock_t end_t_ack=0;
 static clock_t start_t_ack=0;
 /* Start an auxiliary timer and enable the ack timeout event. */
-void start_ack_timer(void);
+void start_ack_timer(void)
 {
 	int timer =end_t_ack-t2;
 	static clock_t t2=start_t_ack;
@@ -89,7 +89,7 @@ void start_ack_timer(void);
 	}	
 }
 /* Stop the auxiliary timer and disable the ack timeout event. */
-void stop ack timer(void);
+void stop ack timer(void)
 {
 		end_t_ack=clock();
 
