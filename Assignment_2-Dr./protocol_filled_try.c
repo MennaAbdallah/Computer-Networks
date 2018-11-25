@@ -40,6 +40,7 @@ void from_physical_layer(frame * r)
 	cin>>r->ack;
 	cout<<"enter frame data"<<endl;
 	cin>>r->data;
+	// to network 
 }
 /* Pass the frame to the physical layer for transmission. */
 void to_physical_layer(frame * s)
@@ -51,8 +52,8 @@ void to_physical_layer(frame * s)
 	cout<<"frame data ="<<s->data;
 }
 /* Start the clock running and enable the timeout event. */
-	static clock_t end_t=0;
-	static clock_t start_t=0;
+static clock_t end_t=0;
+static clock_t start_t=0;
 void start_timer(seq_nr k)
 {
 
